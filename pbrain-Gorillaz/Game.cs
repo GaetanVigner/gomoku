@@ -6,20 +6,22 @@ namespace Gorillaz
 {
     class Game
     {
-        private int[][] _board;
-        private int _xMax;
-        private int _yMax;
         //private IA _IA;
         private int _end;
+        Board board = new Board();
+        Infos infos = new Infos();
+        IOinterface iointerface = new IOinterface();
 
         public void start()
         {
             //_IA = new IA();
             _end = 0;
+            
 
             while (_end == 0)
             {
-                Console.ReadLine();
+                Console.WriteLine("start tests");
+                iointerface.GetInput(board, infos);
             }
         }
     }
