@@ -26,6 +26,16 @@ namespace Gorillaz
             Console.WriteLine(str);
         }
 
+        public void SetError(string statement, dynamic str)
+        {
+            Console.Error.WriteLine(statement + " " + str);
+        }
+
+        public void SetError(dynamic str)
+        {
+            Console.Error.WriteLine(str);
+        }
+
         /// <summary>
         /// Read on the stadard input until a line matching keyWord, add the content to 
         /// the given string array and return it
@@ -85,7 +95,7 @@ namespace Gorillaz
                                 SetOutput("OK", "- parameters are good");
                             break;
                         case "TURN":
-                            if (wordTab == null || wordTab[1] == null || wordTab[2] == null ||
+                            if (wordTab.Length < 3 ||
                                 board.PlaceARock(2, Convert.ToInt32(wordTab[1]), Convert.ToInt32(wordTab[2])) == 1)
                                 SetOutput("ERROR", " - Invalid placement");
                             else
@@ -117,12 +127,12 @@ namespace Gorillaz
                 }
                 catch (FormatException ex)
                 {
-                    SetOutput("ERROR", ex);
+                    SetError("ERROR", ex);
                     ret = 0;
                 }
                 catch (OverflowException ex)
                 {
-                    SetOutput("ERROR", ex);
+                    SetError("ERROR", ex);
                     ret = 0;
                 }
             }

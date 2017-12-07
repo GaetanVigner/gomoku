@@ -6,14 +6,14 @@ namespace Gorillaz
 {
     class Board
     {
-        private int[][] _grid;
+        private int[,] _grid;
         private int _xMax = 19;
         private int _yMax = 19;
 
 
         public int XMax { get => _xMax; set => _xMax = value; }
         public int YMax { get => _yMax; set => _yMax = value; }
-        public int[][] Grid { get => _grid; set => _grid = value; }
+        public int[,] Grid { get => _grid; set => _grid = value; }
 
         /// <summary>
         /// initialize to board and place a 0 on every case of the grid
@@ -23,12 +23,12 @@ namespace Gorillaz
             int i;
             int j;
 
-            for (i = 0; i < YMax - 1; i++)
+            for (i = 0; i < YMax; i++)
             {
-                for (j = 0; j < XMax - 1; j++)
+                for (j = 0; j < XMax; j++)
                 {
                     Console.WriteLine(i + " " +  j);
-                    Grid[i][j] = 0;
+                    Grid[i, j] = 0;
                 }
             }
         }
@@ -42,11 +42,7 @@ namespace Gorillaz
                 return (1);
             XMax = x;
             YMax = y;
-            int[][] Grid = new int[YMax][];
-            for (int i = 0; i < YMax; i++)
-            {
-                Grid[i] = new int[XMax];
-            }
+            Grid = new int[YMax, XMax];
             Initialize();
             return (0);
         }
@@ -61,11 +57,7 @@ namespace Gorillaz
             XMax = size;
             YMax = size;
             Console.WriteLine(XMax + " " + YMax);
-            int[][] Grid = new int[YMax][];
-            for (int i = 0; i < YMax; i++)
-            {
-                Grid[i] = new int[XMax];
-            }
+            Grid = new int[YMax, XMax];
             Initialize();
             return (0);
         }
@@ -78,12 +70,12 @@ namespace Gorillaz
         public int PlaceARock(int player, int y, int x)
         {
             //there is some checks to add
-            if (Grid != null || Grid.Length == 0 ||
+            if (Grid == null || Grid.Length == 0 ||
                 Grid.GetLength(0) <= y || Grid.GetLength(1) <= x)
             {
                 return (1);
             }
-            Grid[y][x] = player;
+            Grid[y, x] = player;
             return (0);
         }
 
