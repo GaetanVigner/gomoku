@@ -26,11 +26,20 @@ namespace Gorillaz
             Console.WriteLine(str);
         }
 
+        /// <summary>
+        /// Write a message on the error output
+        /// </summary>
+        /// <param name="statement"></param>
+        /// <param name="str"></param>
         public void SetError(string statement, dynamic str)
         {
             Console.Error.WriteLine(statement + " " + str);
         }
 
+        /// <summary>
+        /// Write a statement followed by a message on the error output
+        /// </summary>
+        /// <param name="str"></param>
         public void SetError(dynamic str)
         {
             Console.Error.WriteLine(str);
@@ -58,6 +67,10 @@ namespace Gorillaz
             return (wordTab);
         }
 
+        /// <summary>
+        /// fill the Info class
+        /// </summary>
+        /// <param name="infos"></param>
         void SetInfos(Infos infos)
         {
 
@@ -73,14 +86,6 @@ namespace Gorillaz
             input = Console.ReadLine();
             string[] wordTab = input.Split(' ', ',');
             int ret = -1;
-
-#if DEBUG
-            foreach (string str in wordTab)
-            {
-                Console.WriteLine(str);
-            }
-
-# endif
 
             if (wordTab.Length > 0)
             {

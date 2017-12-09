@@ -9,17 +9,20 @@ namespace Gorillaz
         private int[,] _grid;
         private int _xMax = 19;
         private int _yMax = 19;
-
+        private int _lastMoveX = -1;
+        private int _lastMoveY = -1;
 
         public int XMax { get => _xMax; set => _xMax = value; }
         public int YMax { get => _yMax; set => _yMax = value; }
         public int[,] Grid { get => _grid; set => _grid = value; }
+        public int LastMoveX { get => _lastMoveX; set => _lastMoveX = value; }
+        public int LastMoveY { get => _lastMoveY; set => _lastMoveY = value; }
 
         /// <summary>
         /// initialize to board and place a 0 on every case of the grid
         /// </summary>
         public void Initialize()
-        {
+        {        
             int i;
             int j;
 
@@ -27,7 +30,6 @@ namespace Gorillaz
             {
                 for (j = 0; j < XMax; j++)
                 {
-                    Console.WriteLine(i + " " +  j);
                     Grid[i, j] = 0;
                 }
             }
@@ -56,7 +58,6 @@ namespace Gorillaz
                 return (1);
             XMax = size;
             YMax = size;
-            Console.WriteLine(XMax + " " + YMax);
             Grid = new int[YMax, XMax];
             Initialize();
             return (0);
@@ -76,6 +77,8 @@ namespace Gorillaz
                 return (1);
             }
             Grid[y, x] = player;
+            LastMoveX = x;
+            LastMoveY = y;
             return (0);
         }
 
