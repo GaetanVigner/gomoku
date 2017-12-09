@@ -8,7 +8,7 @@ namespace Gorillaz
 {
     class IA
     {
-        public int BrainTurn()
+        public int BrainTurn(ref Board board)
         {
             return (0);
         }
