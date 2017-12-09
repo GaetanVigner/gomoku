@@ -4,17 +4,18 @@ namespace Gorillaz
 {
     class Program
     {
-        static void Main(string[] args)
+        static int Main(string[] args)
         {
             try
             {
                 Game game = new Game();
 
-                game.start();
+                return (game.Start());
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                return (84);
             }
         }
     }
