@@ -6,23 +6,28 @@ namespace Gorillaz
 {
     class Game
     {
-        //private IA _IA;
+        private IA _IA;
         private int _end;
         Board board = new Board();
         Infos infos = new Infos();
         IOinterface iointerface = new IOinterface();
 
-        public void start()
+        public int Start()
         {
-            //_IA = new IA();
+            _IA = new IA();
             _end = 0;
             
 
-            while (_end == 0)
+            while (_end != 84 && _end != 42)
             {
                 Console.WriteLine("start tests");
-                iointerface.GetInput(board, infos);
+                _end = iointerface.GetInput(ref board, ref infos);
+                if (_end == 1)
+                {
+                    _IA.BrainTurn(ref board);
+                }
             }
+            return _end;
         }
     }
 }

@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Board.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="IA.cs" />
     <Compile Include="Infos.cs" />
     <Compile Include="IOinterface.cs" />
     <Compile Include="Program.cs" />

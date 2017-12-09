@@ -81,7 +81,7 @@ namespace Gorillaz
         /// return 0 => nothing to do , 1 => player turn, 84 => error , 42 terminate the brain
         /// </summary>
         /// <param name="board"></param>
-        public int GetInput(Board board, Infos infos)
+        public int GetInput(ref Board board, ref Infos infos)
         {
             input = Console.ReadLine();
             string[] wordTab = input.Split(' ', ',');
