@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pbrain-Gorillaz", "pbrain-Gorillaz\pbrain-Gorillaz.csproj", "{0C09B43B-964F-48FF-9ED9-95F423002D34}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "pbrain-Gorillaz", "pbrain-Gorillaz.csproj", "{3F16189C-CC9B-4370-A27E-52D575E33C47}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +11,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{0C09B43B-964F-48FF-9ED9-95F423002D34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0C09B43B-964F-48FF-9ED9-95F423002D34}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0C09B43B-964F-48FF-9ED9-95F423002D34}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0C09B43B-964F-48FF-9ED9-95F423002D34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F16189C-CC9B-4370-A27E-52D575E33C47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F16189C-CC9B-4370-A27E-52D575E33C47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F16189C-CC9B-4370-A27E-52D575E33C47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F16189C-CC9B-4370-A27E-52D575E33C47}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {ED836314-35E9-4ADB-8709-EE01D7B698AC}
+		SolutionGuid = {32902902-A007-4E9F-96A6-1AD3756C1B79}
 	EndGlobalSection
 EndGlobal
