@@ -12,6 +12,9 @@ namespace Gorillaz
         Infos infos = new Infos();
         IOinterface iointerface = new IOinterface();
 
+        /// <summary>
+        /// unit test for the class Board
+        /// </summary>
         public void test_unit()
         {
             Board board_test = new Board();

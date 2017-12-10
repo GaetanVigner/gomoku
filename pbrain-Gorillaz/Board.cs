@@ -92,7 +92,7 @@ namespace Gorillaz
         }
 
         /// <summary>
-        /// Define the board size
+        /// Define the board size and allocate the grid
         /// </summary>
         public int SetBoardSize(dynamic size)
         {
