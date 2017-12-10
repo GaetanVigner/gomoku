@@ -110,7 +110,7 @@ namespace Gorillaz
                             break;
                         case "TURN":
                             if (wordTab.Length < 3 ||
-                                board.PlaceARock(2, Convert.ToInt32(wordTab[1]), Convert.ToInt32(wordTab[2])) == 1)
+                                board.PlaceARock(2, Convert.ToInt32(wordTab[2]), Convert.ToInt32(wordTab[1])) == 1)
                                 SetOutput("ERROR", " - Invalid placement");
                             else
                                 ret = 1;
