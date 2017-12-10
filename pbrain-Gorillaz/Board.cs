@@ -69,15 +69,19 @@ namespace Gorillaz
             int y;
             int x;
 
-            for (y = SizeMax.Y; y != 0; y++)
+            for (y = SizeMax.Y - 1; y != 0; y--)
             {
-                for (x = SizeMax.X; x != 0; x++)
+                for (x = SizeMax.X -1; x != 0; x--)
                 {
                     for (i = 0; i < offX.Length && i < offY.Length; ++i)
                     {
-                        if (Grid[y + offY[i], x + offX[i]] == 0)
+                        if (y + offY[i] >= 0 && x + offX[i] >= 0 &&
+                            y + offY[i] < SizeMax.Y && x + offX[i] < sizeMax.Y &&
+                            Grid[y + offY[i], x + offX[i]] != 0)
                         {
                             Pos tmp = new Pos();
+                            tmp.X = x;
+                            tmp.Y = y;
                             tab.Add(tmp);
                             i = offX.Length;
                         }
@@ -116,7 +120,6 @@ namespace Gorillaz
             Grid[y, x] = player;
             LastMove.X = x;
             LastMove.Y = y;
-            Console.WriteLine("Placed a rock");
             return (0);
         }
 

@@ -9,7 +9,6 @@ namespace Gorillaz
             try
             {
                 Game game = new Game();
-
                 return (game.Start());
             }
             catch (Exception e)
