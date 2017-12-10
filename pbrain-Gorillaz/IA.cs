@@ -290,10 +290,8 @@ namespace Gorillaz
             int numberMinLoose = 0;
             int numberWin = 0;
             int numberNotLoose = 0;
-
-            Console.WriteLine("LA");
+            
             posPossible = board.GetPlayablePos();
-            Console.WriteLine("LA");
             if ((i = posPossible.Count()) == 1)
                 return (posPossible[0]);
             if (i == 0)
@@ -304,12 +302,9 @@ namespace Gorillaz
                 return (middle);
             }
             numberGame = numberGame / i;
-            Console.WriteLine("LA");
             while (i > 0)
             {
-                Console.WriteLine(i);
                 MonteCarlo(ref board, posPossible[i - 1], ref numberWin, ref numberNotLoose, numberGame);
-                Console.WriteLine(i);
                 if (numberMaxWin < numberWin)
                 {
                     saveMaxWin = posPossible[i - 1];
