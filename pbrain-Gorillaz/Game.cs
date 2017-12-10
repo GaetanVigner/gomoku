@@ -20,7 +20,6 @@ namespace Gorillaz
 
             while (_end != 84 && _end != 42)
             {
-                Console.WriteLine("start tests");
                 _end = iointerface.GetInput(ref board, ref infos);
                 if (_end == 1)
                 {
