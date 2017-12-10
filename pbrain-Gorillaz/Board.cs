@@ -57,6 +57,37 @@ namespace Gorillaz
         }
 
         /// <summary>
+        /// return a list with the position of playable positions
+        /// </summary>
+        /// <returns></returns>
+        public List<Pos> GetPlayablePos()
+        {
+            List<Pos> tab = new List<Pos>();
+            int[] offY = {-1, -1, -1, 0, 0, 1, 1, 1};
+            int[] offX = {-1, 0, 1, -1, 1, -1, 0, 1};
+            int i;
+            int y;
+            int x;
+
+            for (y = SizeMax.Y; y != 0; y++)
+            {
+                for (x = SizeMax.X; x != 0; x++)
+                {
+                    for (i = 0; i < offX.Length && i < offY.Length; ++i)
+                    {
+                        if (Grid[y + offY[i], x + offX[i]] == 0)
+                        {
+                            Pos tmp = new Pos();
+                            tab.Add(tmp);
+                            i = offX.Length;
+                        }
+                    }
+                }
+            }
+            return (tab);
+        }
+
+        /// <summary>
         /// Define the board size
         /// </summary>
         public int SetBoardSize(dynamic size)
