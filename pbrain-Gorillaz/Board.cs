@@ -14,8 +14,13 @@ namespace Gorillaz
         internal Pos SizeMax { get => sizeMax; set => sizeMax = value; }
         internal Pos LastMove { get => lastMove; set => lastMove = value; }
 
+        /// <summary>
+        /// constructor & initialisation
+        /// </summary>
         public Board()
         {
+            SizeMax = new Pos();
+            lastMove = new Pos();
             SizeMax.X = SizeMax.Y = 20;
             LastMove.X = LastMove.Y = -1;
         }
