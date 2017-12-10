@@ -121,8 +121,11 @@ namespace Gorillaz
                 return (1);
             }
             Grid[y, x] = player;
-            LastMove.X = x;
-            LastMove.Y = y;
+            if (player == 2)
+            {
+                LastMove.X = x;
+                LastMove.Y = y;
+            }
             return (0);
         }
 

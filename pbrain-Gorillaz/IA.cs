@@ -8,87 +8,177 @@ namespace Gorillaz
 {
     class IA
     {
-        /// <summary>
-        /// check the maximum alignement of one color verticaly
-        /// </summary>
-        /// <param name="board"></param>
-        /// <param name="pos"></param>
-        /// <param name="color"></param>
-        /// <returns></returns>
-        private int VerticalPossibility(ref Board board, ref Pos pos, int color)
+        private int VerticalColorPossibility(ref Board board, Pos pos, int color = 2)
         {
             int size = 1;
+            int ofs;
 
-            while (pos.Y - 1 > 0 && 
-                (board.Grid[pos.Y - 1, pos.X] == 0 || board.Grid[pos.Y - 1, pos.X] == color))
-                size += 1;
-            while (pos.Y + 1 < board.SizeMax.Y &&
-                (board.Grid[pos.Y + 1, pos.X] == 0 || board.Grid[pos.Y + 1, pos.X] == color))
-                size += 1;
-            return (size);
-        }
-
-        /// <summary>
-        /// check the maximum alignement of one color horizontaly
-        /// </summary>
-        /// <param name="board"></param>
-        /// <param name="pos"></param>
-        /// <param name="color"></param>
-        /// <returns></returns>
-        private int HorizontalPossibility(ref Board board, ref Pos pos, int color)
-        {
-            int size = 1;
-            int x = pos.X;
-
-            while (x - 1 > 0 &&
-                (board.Grid[pos.Y, x - 1] == 0 || board.Grid[pos.Y, x - 1] == color))
+            ofs = 1;
+            while (pos.Y - ofs > 0 &&
+                (board.Grid[pos.Y - ofs, pos.X] == 0 || board.Grid[pos.Y - ofs, pos.X] == color))
             {
-                size += 1;
-                x = x - 1;
+                if (board.Grid[pos.Y - ofs, pos.X] == color)
+                    size += 1;
+                ofs += 1;
             }
-            x = pos.X;
-            while (pos.X + 1 < board.SizeMax.X &&
-                (board.Grid[pos.Y, pos.X + 1] == 0 || board.Grid[pos.Y, pos.X + 1] == color))
+            ofs = 1;
+            while (pos.Y + ofs < board.SizeMax.Y &&
+                (board.Grid[pos.Y + ofs, pos.X] == 0 || board.Grid[pos.Y + ofs, pos.X] == color))
             {
-                size += 1;
-                x = x + 1;
+                if (board.Grid[pos.Y + ofs, pos.X] == color)
+                    size += 1;
+                ofs += 1;
             }
             return (size);
         }
 
-        /// <summary>
-        /// check the maximum alignement of one color in diagonal
-        /// </summary>
-        /// <param name="board"></param>
-        /// <param name="pos"></param>
-        /// <param name="color"></param>
-        /// <returns></returns>
-        private int DiagonalPossibility(ref Board board, ref Pos pos, int color)
+        private int VerticalTotalPossibility(ref Board board, Pos pos, int color = 2)
         {
             int size = 1;
-            int tmpSize = 1;
+            int ofs;
 
-            //diagonale haut-gauche => bas-droite
-            while (pos.Y - 1 > 0 && pos.X - 1 > 0 &&
-                (board.Grid[pos.Y - 1, pos.X - 1] == 0 || board.Grid[pos.Y - 1, pos.X - 1] == color))
-                tmpSize += 1;
-            while (pos.Y + 1 < board.SizeMax.Y && pos.X + 1 < board.SizeMax.X &&
-                (board.Grid[pos.Y + 1, pos.X + 1] == 0 || board.Grid[pos.Y + 1, pos.X + 1] == color))
-                tmpSize += 1;
-            size = tmpSize;
-            tmpSize = 1;
-            //diagonale haut-droite => bas-gauche
-            while (pos.Y - 1 > 0 && pos.X + 1 < board.SizeMax.X &&
-                (board.Grid[pos.Y - 1, pos.X + 1] == 0 || board.Grid[pos.Y - 1, pos.X + 1] == color))
-                tmpSize += 1;
-            while (pos.Y + 1 < board.SizeMax.Y && pos.X - 1 > 0 &&
-                (board.Grid[pos.Y + 1, pos.X - 1] == 0 || board.Grid[pos.Y + 1, pos.X - 1] == color))
-                tmpSize += 1;
-            if (tmpSize > size)
-                return (tmpSize);
+            ofs = 1;
+            while (pos.Y - ofs > 0 &&
+                (board.Grid[pos.Y - ofs, pos.X] == 0 || board.Grid[pos.Y - ofs, pos.X] == color))
+            {
+                size += 1;
+                ofs += 1;
+            }
+            ofs = 1;
+            while (pos.Y + ofs < board.SizeMax.Y &&
+                (board.Grid[pos.Y + ofs, pos.X] == 0 || board.Grid[pos.Y + ofs, pos.X] == color))
+            {
+                size += 1;
+                ofs += 1;
+            }
             return (size);
         }
 
+        private Pos VerticalClosestEmpty(ref Board board, Pos pos, int color = 2)
+        {
+            Pos ret = new Pos();
+
+            int size = 1;
+            int hofs;
+            int bofs;
+            int end = 0;
+
+            hofs = 1;
+            ret.X = -1;
+            while (end == 0 && pos.Y - hofs > 0 &&
+                (board.Grid[pos.Y - hofs, pos.X] == 0 || board.Grid[pos.Y - hofs, pos.X] == color))
+            {
+                if (board.Grid[pos.Y - hofs, pos.X] == 0)
+                {
+                    ret.X = pos.X;
+                    ret.Y = pos.Y - hofs;
+                    end = 1;
+                }
+                size += 1;
+                hofs += 1;
+            }
+            bofs = 1;
+            end = 0;
+            while (end == 0 && pos.Y + bofs < board.SizeMax.Y &&
+                (board.Grid[pos.Y + bofs, pos.X] == 0 || board.Grid[pos.Y + bofs, pos.X] == color))
+            {
+                if (board.Grid[pos.Y + bofs, pos.X] == 0 && (ret.X == -1 || bofs < hofs))
+                {
+                    ret.X = pos.X;
+                    ret.Y = pos.Y + bofs;
+                    end = 1;
+                }
+                size += 1;
+                bofs += 1;
+            }
+            return (ret);
+        }
+
+        private int HorizontalColorPossibility(ref Board board, Pos pos, int color = 2)
+        {
+            int size = 1;
+            int ofs;
+
+            ofs = 1;
+            while (pos.X - ofs > 0 &&
+                (board.Grid[pos.Y, pos.X - ofs] == 0 || board.Grid[pos.Y, pos.X - ofs] == color))
+            {
+                if (board.Grid[pos.Y, pos.X - ofs] == color)
+                    size += 1;
+                ofs += 1;
+            }
+            ofs = 1;
+            while (pos.X + ofs < board.SizeMax.X &&
+                (board.Grid[pos.Y, pos.X + ofs] == 0 || board.Grid[pos.Y, pos.X + ofs] == color))
+            {
+                if (board.Grid[pos.Y, pos.X + ofs] == color)
+                    size += 1;
+                ofs += 1;
+            }
+            return (size);
+        }
+
+        private int HorizontalTotalPossibility(ref Board board, Pos pos, int color = 2)
+        {
+            int size = 1;
+            int ofs;
+
+            ofs = 1;
+            while (pos.X - ofs > 0 &&
+                (board.Grid[pos.Y, pos.X - ofs] == 0 || board.Grid[pos.Y, pos.X - ofs] == color))
+            {
+                size += 1;
+                ofs += 1;
+            }
+            ofs = 1;
+            while (pos.X + ofs < board.SizeMax.X &&
+                (board.Grid[pos.Y, pos.X + ofs] == 0 || board.Grid[pos.Y, pos.X + ofs] == color))
+            {
+                size += 1;
+                ofs += 1;
+            }
+            return (size);
+        }
+
+        private Pos HorizontalClosestEmpty(ref Board board, Pos pos, int color = 2)
+        {
+            Pos ret = new Pos();
+
+            int size = 1;
+            int hofs;
+            int bofs;
+            int end = 0;
+            
+            hofs = 1;
+            ret.X = -1;
+            while (end == 0 && pos.X - hofs > 0 &&
+                (board.Grid[pos.Y, pos.X - hofs] == 0 || board.Grid[pos.Y - hofs, pos.X] == color))
+            {
+                if (board.Grid[pos.Y, pos.X- hofs] == 0)
+                {
+                    ret.X = pos.X;
+                    ret.Y = pos.Y - hofs;
+                    end = 1;
+                }
+                size += 1;
+                hofs += 1;
+            }
+            bofs = 1;
+            end = 0;
+            while (end == 0 && pos.X + bofs < board.SizeMax.X &&
+                (board.Grid[pos.Y, pos.X + bofs] == 0 || board.Grid[pos.Y, pos.X + bofs] == color))
+            {
+                if (board.Grid[pos.Y, pos.X + bofs] == 0 && (ret.X == -1 || bofs < hofs))
+                {
+                    ret.Y = pos.Y + bofs;
+                    end = 1;
+                }
+                size += 1;
+                bofs += 1;
+            }
+            return (ret);
+        }
+        
         private void PutARock(ref int[,] boardCopy, int y, int x, int color)
         {
             boardCopy[y, x] = color;
@@ -279,11 +369,31 @@ namespace Gorillaz
             }
         }
 
+        public Pos CheckDefense(ref Board board)
+        {
+            Pos ret;
+            if (HorizontalColorPossibility(ref board, board.LastMove) >= 3 &&
+                HorizontalTotalPossibility(ref board, board.LastMove) >= 5)
+            {
+                return (HorizontalClosestEmpty(ref board, board.LastMove));
+            }
+            if (VerticalColorPossibility(ref board, board.LastMove) >= 3 &&
+                VerticalTotalPossibility(ref board, board.LastMove) >= 5)
+            {
+                return (VerticalClosestEmpty(ref board, board.LastMove));
+            }
+            ret = new Pos();
+            ret.X = -1;
+            ret.Y = -1;
+            return (ret);
+        }
+
         public Pos BrainTurn(ref Board board, ref IOinterface ointerface)
         {
             List<Pos> posPossible;
             Pos saveMaxWin = new Pos();
             Pos saveMinLoose = new Pos();
+            Pos defense = new Pos();
             int i = 0;
             int numberGame = 15000;
             int numberMaxWin = 0;
@@ -300,6 +410,11 @@ namespace Gorillaz
                 middle.X = board.SizeMax.X / 2;
                 middle.Y = board.SizeMax.Y / 2;
                 return (middle);
+            }
+            defense = CheckDefense(ref board);
+            if (defense.X > 0 && defense.Y > 0)
+            {
+                return (defense);
             }
             numberGame = numberGame / i;
             while (i > 0)
