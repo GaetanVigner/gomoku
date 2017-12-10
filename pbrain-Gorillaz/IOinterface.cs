@@ -26,6 +26,10 @@ namespace Gorillaz
             Console.WriteLine(str);
         }
 
+        /// <summary>
+        /// write the ia move on the stadard output
+        /// </summary>
+        /// <param name="pos"></param>
         public void SetTurn(Pos pos)
         {
             Console.WriteLine(pos.X + "," + pos.Y);
@@ -102,7 +106,7 @@ namespace Gorillaz
                             if (wordTab.Length < 2 || board.SetBoardSize(Convert.ToInt32(wordTab[1])) == 1)
                                 SetOutput("ERROR", "- Invalid board size, it mmust be between 5 and 40");
                             else
-                                SetOutput("OK", "- parameters are good");
+                                SetOutput("OK");
                             break;
                         case "TURN":
                             if (wordTab.Length < 3 ||

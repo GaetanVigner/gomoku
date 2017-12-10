@@ -108,7 +108,6 @@ namespace Gorillaz
         /// <returns></returns>
         public int PlaceARock(int player, int y, int x)
         {
-            //there is some checks to add
             if (Grid == null || Grid.Length == 0 ||
                 Grid.GetLength(0) <= y || Grid.GetLength(1) <= x)
             {
@@ -117,6 +116,7 @@ namespace Gorillaz
             Grid[y, x] = player;
             LastMove.X = x;
             LastMove.Y = y;
+            Console.WriteLine("Placed a rock");
             return (0);
         }
 
