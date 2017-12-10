@@ -10,6 +10,7 @@ namespace Gorillaz
     {
         public int BrainTurn(ref Board board)
         {
+
             return (0);
         }
     }
