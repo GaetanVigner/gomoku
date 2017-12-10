@@ -15,6 +15,7 @@ namespace Gorillaz
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                Console.ReadKey(true);
                 return (84);
             }
         }

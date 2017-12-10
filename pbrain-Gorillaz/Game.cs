@@ -27,7 +27,6 @@ namespace Gorillaz
                     iointerface.SetTurn(pos);
                     if (board.PlaceARock(1, pos.Y, pos.X) == 1)
                         return (84);
-
                 }
             }
             return _end;
