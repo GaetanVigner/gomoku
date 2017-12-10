@@ -26,6 +26,11 @@ namespace Gorillaz
             Console.WriteLine(str);
         }
 
+        public void SetTurn(Pos pos)
+        {
+            Console.WriteLine(pos.X + "," + pos.Y);
+        }
+
         /// <summary>
         /// Write a message on the error output
         /// </summary>

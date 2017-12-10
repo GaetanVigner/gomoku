@@ -16,7 +16,7 @@ namespace Gorillaz
         {
             _IA = new IA();
             _end = 0;
-            
+            Pos pos = new Pos();
 
             while (_end != 84 && _end != 42)
             {
@@ -24,7 +24,10 @@ namespace Gorillaz
                 _end = iointerface.GetInput(ref board, ref infos);
                 if (_end == 1)
                 {
-                    _IA.BrainTurn(ref board, ref iointerface);
+                    pos = _IA.BrainTurn(ref board, ref iointerface);
+                    iointerface.SetTurn(pos);
+                    if (board.PlaceARock(1, pos.Y, pos.X) == 1)
+                        return (84);
                 }
             }
             return _end;

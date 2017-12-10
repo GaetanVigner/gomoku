@@ -157,7 +157,7 @@ namespace Gorillaz
         /// makes a copy of a 2d array
         /// </summary>
         /// <param name="copy"></param>
-        public void CopyGrid(int[,] copy)
+        public void CopyGrid(ref int[,] copy)
         {
             copy = Grid.Clone() as int[,]; 
         }
