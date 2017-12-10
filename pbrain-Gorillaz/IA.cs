@@ -296,6 +296,13 @@ namespace Gorillaz
             Console.WriteLine("LA");
             if ((i = posPossible.Count()) == 1)
                 return (posPossible[0]);
+            if (i == 0)
+            {
+                Pos middle = new Pos();
+                middle.X = board.SizeMax.X / 2;
+                middle.Y = board.SizeMax.Y / 2;
+                return (middle);
+            }
             numberGame = numberGame / i;
             Console.WriteLine("LA");
             while (i > 0)
