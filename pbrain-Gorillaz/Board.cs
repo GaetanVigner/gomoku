@@ -73,17 +73,20 @@ namespace Gorillaz
             {
                 for (x = SizeMax.X -1; x != 0; x--)
                 {
-                    for (i = 0; i < offX.Length && i < offY.Length; ++i)
+                    if (Grid[y, x] == 0)
                     {
-                        if (y + offY[i] >= 0 && x + offX[i] >= 0 &&
-                            y + offY[i] < SizeMax.Y && x + offX[i] < sizeMax.Y &&
-                            Grid[y + offY[i], x + offX[i]] != 0)
+                        for (i = 0; i < offX.Length && i < offY.Length; ++i)
                         {
-                            Pos tmp = new Pos();
-                            tmp.X = x;
-                            tmp.Y = y;
-                            tab.Add(tmp);
-                            i = offX.Length;
+                            if (y + offY[i] >= 0 && x + offX[i] >= 0 &&
+                                y + offY[i] < SizeMax.Y && x + offX[i] < sizeMax.Y &&
+                                Grid[y + offY[i], x + offX[i]] != 0)
+                            {
+                                Pos tmp = new Pos();
+                                tmp.X = x;
+                                tmp.Y = y;
+                                tab.Add(tmp);
+                                i = offX.Length;
+                            }
                         }
                     }
                 }

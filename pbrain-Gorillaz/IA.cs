@@ -319,7 +319,7 @@ namespace Gorillaz
                 numberNotLoose = 0;
                 i--;
             }
-            if (numberMaxWin > 2 * numberMinLoose || numberMaxWin == numberGame)
+            if (numberMaxWin > 2 * numberMinLoose || numberMaxWin > numberGame * 0.8)
                 return (saveMaxWin);
             return (saveMinLoose);
         }
