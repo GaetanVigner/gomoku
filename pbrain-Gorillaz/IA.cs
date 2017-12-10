@@ -294,7 +294,14 @@ namespace Gorillaz
             posPossible = board.GetPlayablePos();
             if ((i = posPossible.Count()) == 1)
                 return (posPossible[0]);
-            numberGame = numberGame / i;
+            if (i != 0)
+                numberGame = numberGame / i;
+            else
+            {
+                saveMinLoose.Y = 0;
+                saveMinLoose.X = 0;
+                return (saveMinLoose);
+            }
             while (i > 0)
             {
                 MonteCarlo(ref board, posPossible[i - 1], ref numberWin, ref numberNotLoose, numberGame);
