@@ -7,16 +7,18 @@ namespace Gorillaz
     class Board
     {
         private int[,] _grid;
-        private int _xMax = 19;
-        private int _yMax = 19;
-        private int _lastMoveX = -1;
-        private int _lastMoveY = -1;
-
-        public int XMax { get => _xMax; set => _xMax = value; }
-        public int YMax { get => _yMax; set => _yMax = value; }
+        private Pos sizeMax;
+        private Pos lastMove;
+        
         public int[,] Grid { get => _grid; set => _grid = value; }
-        public int LastMoveX { get => _lastMoveX; set => _lastMoveX = value; }
-        public int LastMoveY { get => _lastMoveY; set => _lastMoveY = value; }
+        internal Pos SizeMax { get => sizeMax; set => sizeMax = value; }
+        internal Pos LastMove { get => lastMove; set => lastMove = value; }
+
+        public Board ()
+        {
+            SizeMax.X = SizeMax.Y = 20;
+            LastMove.X = LastMove.Y = -1;
+        }
 
         /// <summary>
         /// initialize to board and place a 0 on every case of the grid
@@ -26,9 +28,9 @@ namespace Gorillaz
             int i;
             int j;
 
-            for (i = 0; i < YMax; i++)
+            for (i = 0; i < SizeMax.Y; i++)
             {
-                for (j = 0; j < XMax; j++)
+                for (j = 0; j < SizeMax.X; j++)
                 {
                     Grid[i, j] = 0;
                 }
@@ -42,9 +44,9 @@ namespace Gorillaz
         {
             if (x < 5 || y < 5 || (x * y) > 1600)
                 return (1);
-            XMax = x;
-            YMax = y;
-            Grid = new int[YMax, XMax];
+            SizeMax.X = x;
+            SizeMax.Y = y;
+            Grid = new int[SizeMax.Y, SizeMax.X];
             Initialize();
             return (0);
         }
@@ -56,9 +58,9 @@ namespace Gorillaz
         {
             if (size < 5 || size > 40)
                 return (1);
-            XMax = size;
-            YMax = size;
-            Grid = new int[YMax, XMax];
+            SizeMax.X = size;
+            sizeMax.Y = size;
+            Grid = new int[SizeMax.Y, SizeMax.X];
             Initialize();
             return (0);
         }
@@ -77,8 +79,8 @@ namespace Gorillaz
                 return (1);
             }
             Grid[y, x] = player;
-            LastMoveX = x;
-            LastMoveY = y;
+            LastMove.X = x;
+            LastMove.Y = y;
             return (0);
         }
 
