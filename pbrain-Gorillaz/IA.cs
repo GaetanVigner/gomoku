@@ -102,7 +102,7 @@ namespace Gorillaz
 
             //diagonale haut-gauche => bas-droite
             while (y - 1 > 0 && x - 1 > 0 &&
-                boardCopy[y + 1, x - 1] == color)
+                boardCopy[y - 1, x - 1] == color)
             {
                 x--;
                 y--;
@@ -290,7 +290,7 @@ namespace Gorillaz
             int numberMinLoose = 0;
             int numberWin = 0;
             int numberNotLoose = 0;
-            
+
             posPossible = board.GetPlayablePos();
             if ((i = posPossible.Count()) == 1)
                 return (posPossible[0]);
