@@ -24,7 +24,7 @@ namespace Gorillaz
                 _end = iointerface.GetInput(ref board, ref infos);
                 if (_end == 1)
                 {
-                    _IA.BrainTurn(ref board);
+                    _IA.BrainTurn(ref board, ref iointerface);
                 }
             }
             return _end;
