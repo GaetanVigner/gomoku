@@ -112,7 +112,7 @@ namespace Gorillaz
             }
             x = xSave;
             y = ySave;
-            while (y + 1 < yMax && pos.X + 1 < xMax &&
+            while (y + 1 < yMax && x + 1 < xMax &&
                 boardCopy[y + 1, x + 1] == color)
             {
                 x++;
