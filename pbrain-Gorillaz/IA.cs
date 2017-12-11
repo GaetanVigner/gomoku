@@ -152,12 +152,12 @@ namespace Gorillaz
             hofs = 1;
             ret.X = -1;
             while (end == 0 && pos.X - hofs > 0 &&
-                (board.Grid[pos.Y, pos.X - hofs] == 0 || board.Grid[pos.Y - hofs, pos.X] == color))
+                (board.Grid[pos.Y, pos.X - hofs] == 0 || board.Grid[pos.Y, pos.X - hofs] == color))
             {
-                if (board.Grid[pos.Y, pos.X- hofs] == 0)
+                if (board.Grid[pos.Y, pos.X - hofs] == 0)
                 {
-                    ret.X = pos.X;
-                    ret.Y = pos.Y - hofs;
+                    ret.X = pos.X - hofs;
+                    ret.Y = pos.Y;
                     end = 1;
                 }
                 size += 1;
@@ -170,7 +170,8 @@ namespace Gorillaz
             {
                 if (board.Grid[pos.Y, pos.X + bofs] == 0 && (ret.X == -1 || bofs < hofs))
                 {
-                    ret.Y = pos.Y + bofs;
+                    ret.Y = pos.Y;
+                    ret.X = pos.X + bofs;
                     end = 1;
                 }
                 size += 1;
@@ -178,7 +179,179 @@ namespace Gorillaz
             }
             return (ret);
         }
-        
+
+        private int DiagonalHGBDColorPossibility(ref Board board, Pos pos, int color = 2)
+        {
+            int size = 1;
+            int ofs;
+
+            ofs = 1;
+            while (pos.X - ofs > 0 && pos.Y - ofs > 0 &&
+                (board.Grid[pos.Y - ofs, pos.X - ofs] == 0 || board.Grid[pos.Y - ofs , pos.X - ofs] == color))
+            {
+                if (board.Grid[pos.Y - ofs, pos.X - ofs] == color)
+                    size += 1;
+                ofs += 1;
+            }
+            ofs = 1;
+            while (pos.X + ofs < board.SizeMax.X && pos.Y + ofs < board.SizeMax.Y &&
+                (board.Grid[pos.Y + ofs, pos.X + ofs] == 0 || board.Grid[pos.Y + ofs, pos.X + ofs] == color))
+            {
+                if (board.Grid[pos.Y + ofs, pos.X + ofs] == color)
+                    size += 1;
+                ofs += 1;
+            }
+            return (size);
+        }
+
+        private int DiagonalHGBDTotalPossibility(ref Board board, Pos pos, int color = 2)
+        {
+            int size = 1;
+            int ofs;
+
+            ofs = 1;
+            while (pos.X - ofs > 0 && pos.Y - ofs > 0 &&
+                (board.Grid[pos.Y - ofs, pos.X - ofs] == 0 || board.Grid[pos.Y - ofs, pos.X - ofs] == color))
+            {
+                size += 1;
+                ofs += 1;
+            }
+            ofs = 1;
+            while (pos.X + ofs < board.SizeMax.X && pos.Y + ofs < board.SizeMax.Y &&
+                (board.Grid[pos.Y + ofs, pos.X + ofs] == 0 || board.Grid[pos.Y + ofs, pos.X + ofs] == color))
+            {
+                size += 1;
+                ofs += 1;
+            }
+            return (size);
+        }
+
+        private Pos DiagonalHGBDTClosestEmpty(ref Board board, Pos pos, int color = 2)
+        {
+            Pos ret = new Pos();
+
+            int size = 1;
+            int hofs;
+            int bofs;
+            int end = 0;
+
+            hofs = 1;
+            ret.X = -1;
+            while (end == 0 && pos.X - hofs > 0 && pos.Y - hofs > 0 &&
+                (board.Grid[pos.Y - hofs, pos.X - hofs] == 0 || board.Grid[pos.Y - hofs, pos.X - hofs] == color))
+            {
+                if (board.Grid[pos.Y - hofs, pos.X - hofs] == 0)
+                {
+                    ret.X = pos.X - hofs;
+                    ret.Y = pos.Y - hofs;
+                    end = 1;
+                }
+                size += 1;
+                hofs += 1;
+            }
+            bofs = 1;
+            end = 0;
+            while (end == 0 && pos.X + bofs < board.SizeMax.X && pos.Y + bofs < board.SizeMax.Y &&
+                (board.Grid[pos.Y + bofs, pos.X + bofs] == 0 || board.Grid[pos.Y + bofs, pos.X + bofs] == color))
+            {
+                if (board.Grid[pos.Y + bofs, pos.X + bofs] == 0 && (ret.X == -1 || bofs < hofs))
+                {
+                    ret.Y = pos.Y + bofs;
+                    ret.X = pos.X + bofs;
+                    end = 1;
+                }
+                size += 1;
+                bofs += 1;
+            }
+            return (ret);
+        }
+
+        private int DiagonalBGHDColorPossibility(ref Board board, Pos pos, int color = 2)
+        {
+            int size = 1;
+            int ofs;
+
+            ofs = 1;
+            while (pos.X - ofs > 0 && pos.Y + ofs < board.SizeMax.Y &&
+                (board.Grid[pos.Y + ofs, pos.X - ofs] == 0 || board.Grid[pos.Y + ofs, pos.X - ofs] == color))
+            {
+                if (board.Grid[pos.Y + ofs, pos.X - ofs] == color)
+                    size += 1;
+                ofs += 1;
+            }
+            ofs = 1;
+            while (pos.X + ofs < board.SizeMax.X && pos.Y - ofs > 0 &&
+                (board.Grid[pos.Y - ofs, pos.X + ofs] == 0 || board.Grid[pos.Y - ofs, pos.X + ofs] == color))
+            {
+                if (board.Grid[pos.Y - ofs, pos.X + ofs] == color)
+                    size += 1;
+                ofs += 1;
+            }
+            return (size);
+        }
+
+        private int DiagonalBGHDTotalPossibility(ref Board board, Pos pos, int color = 2)
+        {
+            int size = 1;
+            int ofs;
+
+            ofs = 1;
+            while (pos.X - ofs > 0 && pos.Y + ofs < board.SizeMax.Y &&
+                (board.Grid[pos.Y + ofs, pos.X - ofs] == 0 || board.Grid[pos.Y + ofs, pos.X - ofs] == color))
+            {
+                size += 1;
+                ofs += 1;
+            }
+            ofs = 1;
+            while (pos.X + ofs < board.SizeMax.X && pos.Y - ofs > 0 &&
+                (board.Grid[pos.Y - ofs, pos.X + ofs] == 0 || board.Grid[pos.Y - ofs, pos.X + ofs] == color))
+            {
+                size += 1;
+                ofs += 1;
+            }
+            return (size);
+        }
+
+        private Pos DiagonalBGHDTClosestEmpty(ref Board board, Pos pos, int color = 2)
+        {
+            Pos ret = new Pos();
+
+            int size = 1;
+            int hofs;
+            int bofs;
+            int end = 0;
+
+            hofs = 1;
+            ret.X = -1;
+            while (end == 0 && pos.X - hofs > 0 && pos.Y + hofs < board.SizeMax.Y &&
+                (board.Grid[pos.Y + hofs, pos.X - hofs] == 0 || board.Grid[pos.Y + hofs, pos.X - hofs] == color))
+            {
+                if (board.Grid[pos.Y + hofs, pos.X - hofs] == 0)
+                {
+                    ret.X = pos.X - hofs;
+                    ret.Y = pos.Y + hofs;
+                    end = 1;
+                }
+                size += 1;
+                hofs += 1;
+            }
+            bofs = 1;
+            end = 0;
+            while (end == 0 && pos.X + bofs < board.SizeMax.X && pos.Y - bofs > 0 &&
+                (board.Grid[pos.Y - bofs, pos.X + bofs] == 0 || board.Grid[pos.Y - bofs, pos.X + bofs] == color))
+            {
+                if (board.Grid[pos.Y - bofs, pos.X + bofs] == 0 && (ret.X == -1 || bofs < hofs))
+                {
+                    ret.Y = pos.Y - bofs;
+                    ret.X = pos.X + bofs;
+                    end = 1;
+                }
+                size += 1;
+                bofs += 1;
+            }
+            return (ret);
+        }
+
         private void PutARock(ref int[,] boardCopy, int y, int x, int color)
         {
             boardCopy[y, x] = color;
@@ -374,14 +547,16 @@ namespace Gorillaz
             Pos ret;
             if (HorizontalColorPossibility(ref board, board.LastMove) >= 3 &&
                 HorizontalTotalPossibility(ref board, board.LastMove) >= 5)
-            {
                 return (HorizontalClosestEmpty(ref board, board.LastMove));
-            }
             if (VerticalColorPossibility(ref board, board.LastMove) >= 3 &&
                 VerticalTotalPossibility(ref board, board.LastMove) >= 5)
-            {
                 return (VerticalClosestEmpty(ref board, board.LastMove));
-            }
+            if (DiagonalHGBDColorPossibility(ref board, board.LastMove) >= 3 &&
+                DiagonalHGBDTotalPossibility(ref board, board.LastMove) >= 5)
+                return (DiagonalHGBDTClosestEmpty(ref board, board.LastMove));
+            if (DiagonalBGHDColorPossibility(ref board, board.LastMove) >= 3 &&
+                DiagonalBGHDTotalPossibility(ref board, board.LastMove) >= 5)
+                return (DiagonalBGHDTClosestEmpty(ref board, board.LastMove));
             ret = new Pos();
             ret.X = -1;
             ret.Y = -1;
