@@ -51,7 +51,7 @@ namespace Gorillaz
                 _end = iointerface.GetInput(ref board, ref infos);
                 if (_end == 1)
                 {
-                    pos = _IA.BrainTurn(ref board, ref iointerface);
+                    pos = _IA.BrainTurn(ref board);
                     iointerface.SetTurn(pos);
                     if (board.PlaceARock(1, pos.Y, pos.X) == 1)
                         return (84);

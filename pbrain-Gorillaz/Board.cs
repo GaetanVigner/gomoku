@@ -9,10 +9,12 @@ namespace Gorillaz
         private int[,] _grid;
         private Pos sizeMax;
         private Pos lastMove;
+        private Pos iALastMove;
         
         public int[,] Grid { get => _grid; set => _grid = value; }
         internal Pos SizeMax { get => sizeMax; set => sizeMax = value; }
         internal Pos LastMove { get => lastMove; set => lastMove = value; }
+        internal Pos IALastMove { get => iALastMove; set => iALastMove = value; }
 
         /// <summary>
         /// constructor & initialisation
@@ -21,8 +23,10 @@ namespace Gorillaz
         {
             SizeMax = new Pos();
             lastMove = new Pos();
+            IALastMove = new Pos();
             SizeMax.X = SizeMax.Y = 20;
             LastMove.X = LastMove.Y = -1;
+            IALastMove.X = IALastMove.Y = -1;
         }
 
         /// <summary>
@@ -43,20 +47,6 @@ namespace Gorillaz
         }
 
         /// <summary>
-        /// Define the board size
-        /// </summary>
-        public int SetBoardSize(dynamic x, dynamic y)
-        {
-            if (x < 5 || y < 5 || (x * y) > 1600)
-                return (1);
-            SizeMax.X = x;
-            SizeMax.Y = y;
-            Grid = new int[SizeMax.Y, SizeMax.X];
-            Initialize();
-            return (0);
-        }
-
-        /// <summary>
         /// return a list with the position of playable positions
         /// </summary>
         /// <returns></returns>
@@ -69,9 +59,9 @@ namespace Gorillaz
             int y;
             int x;
 
-            for (y = SizeMax.Y - 1; y != 0; y--)
+            for (y = 0; y < SizeMax.Y ; y++)
             {
-                for (x = SizeMax.X -1; x != 0; x--)
+                for (x = 0; x < SizeMax.X; x++)
                 {
                     if (Grid[y, x] == 0)
                     {
@@ -103,6 +93,20 @@ namespace Gorillaz
                 return (1);
             SizeMax.X = size;
             sizeMax.Y = size;
+            Grid = new int[SizeMax.Y, SizeMax.X];
+            Initialize();
+            return (0);
+        }
+
+        /// <summary>
+        /// Define the board size
+        /// </summary>
+        public int SetBoardSize(dynamic x, dynamic y)
+        {
+            if (x < 5 || y < 5 || (x * y) > 1600)
+                return (1);
+            SizeMax.X = x;
+            SizeMax.Y = y;
             Grid = new int[SizeMax.Y, SizeMax.X];
             Initialize();
             return (0);
@@ -162,13 +166,20 @@ namespace Gorillaz
             }
         }
 
-        /// <summary>
-        /// makes a copy of a 2d array
-        /// </summary>
-        /// <param name="copy"></param>
-        public void CopyGrid(ref int[,] copy)
+        public Pos GetRandomPos()
         {
-            copy = Grid.Clone() as int[,]; 
+            Pos ret = new Pos();
+            var random = new Random((int)DateTime.Now.Ticks);
+            int g = 0;
+
+            while (g == 0)
+            {
+                ret.X = random.Next(0, SizeMax.X);
+                ret.Y = random.Next(0, SizeMax.X);
+                if (Grid[ret.Y, ret.X] == 0)
+                    g = 1;
+            }
+            return (ret);
         }
     }
 }
