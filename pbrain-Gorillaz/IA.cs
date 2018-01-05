@@ -8,6 +8,10 @@ namespace Gorillaz
 {
     class IA
     {
+        /// <summary>
+        /// return the total rocks that a player can align in a row from a start point
+        /// </summary>
+        /// <returns></returns>
         private int TotalPossibility(ref Board board, Pos pos, int Xoffset, int Yoffset, int color = 2)
         {
             int ret = 1;
@@ -166,72 +170,76 @@ namespace Gorillaz
             return (0);
         }
 
-        private int OffensiveDefensivePattern(ref Board board, Pos pos)
+        private int OffensiveDefensivePattern(ref Board board, Pos pos, int color, int enemyColor)
         {
 
             int ret = 0;
-            if (TotalPossibility(ref board, board.LastMove, 1, 0) >= 5)
+            if (TotalPossibility(ref board, board.LastMove, 1, 0, enemyColor) >= 5)
+                ret += PatternWeight(ref board, ref pos, 1, 0, enemyColor);
+            if (TotalPossibility(ref board, board.LastMove, 0, 1, enemyColor) >= 5)
+                ret += PatternWeight(ref board, ref pos, 0, 1, enemyColor);
+            if (TotalPossibility(ref board, board.LastMove, 1, 1, enemyColor) >= 5)
+                ret += PatternWeight(ref board, ref pos, 1, 1, enemyColor);
+            if (TotalPossibility(ref board, board.LastMove, -1, 1, enemyColor) >= 5)
+                ret += PatternWeight(ref board, ref pos, -1, 1, enemyColor);
+            if (TotalPossibility(ref board, board.LastMove, 1, 0, color) >= 5)
             {
-                ret += PatternWeight(ref board, ref pos, 1, 0);
-                ret += PatternWeight(ref board, ref pos, 1, 0, 1, 4);
+                ret += PatternWeight(ref board, ref pos, 1, 0, color, 4) + 2;
             }
-            if (TotalPossibility(ref board, board.LastMove, 0, 1) >= 5)
+            if (TotalPossibility(ref board, board.LastMove, 0, 1, color) >= 5)
             {
-                ret += PatternWeight(ref board, ref pos, 0, 1);
-                ret += PatternWeight(ref board, ref pos, 0, 1, 1, 4);
+                ret += PatternWeight(ref board, ref pos, 0, 1, color, 4) + 2;
             }
-            if (TotalPossibility(ref board, board.LastMove, 1, 1) >= 5)
+            if (TotalPossibility(ref board, board.LastMove, 1, 1, color) >= 5)
             {
-                ret += PatternWeight(ref board, ref pos, 1, 1);
-                ret += PatternWeight(ref board, ref pos, 1, 1, 1, 4);
+                ret += PatternWeight(ref board, ref pos, 1, 1, color, 4) + 2;
             }
-            if (TotalPossibility(ref board, board.LastMove, -1, 1) >= 5)
+            if (TotalPossibility(ref board, board.LastMove, -1, 1, color) >= 5)
             {
-                ret += PatternWeight(ref board, ref pos, -1, 1);
-                ret += PatternWeight(ref board, ref pos, -1, 1, 1, 4);
+                ret += PatternWeight(ref board, ref pos, -1, 1, color, 4) + 2;
             }
             return (ret);
         }
-        private int GetDefensiveWeight(ref Board board, Pos pos)
+        private int GetDefensiveWeight(ref Board board, Pos pos, int color, int enemyColor)
         {
             int ret = 0;
-            if (TotalPossibility(ref board, board.LastMove, 1, 0) >= 5)
-                ret += LignWeight(ref board, ref pos, 1, 0, 3);
-            if (TotalPossibility(ref board, board.LastMove, 0, 1) >= 5)
-                ret += LignWeight(ref board, ref pos, 0, 1, 3);
-            if (TotalPossibility(ref board, board.LastMove, 1, 1) >= 5)
-                ret += LignWeight(ref board, ref pos, 1, 1, 3);
-            if (TotalPossibility(ref board, board.LastMove, -1, 1) >= 5)
-                ret += LignWeight(ref board, ref pos, -1, 1, 3);
+            if (TotalPossibility(ref board, board.LastMove, 1, 0, color) >= 5)
+                ret += LignWeight(ref board, ref pos, 1, 0, 3, color);
+            if (TotalPossibility(ref board, board.LastMove, 0, 1, color) >= 5)
+                ret += LignWeight(ref board, ref pos, 0, 1, 3, color);
+            if (TotalPossibility(ref board, board.LastMove, 1, 1, color) >= 5)
+                ret += LignWeight(ref board, ref pos, 1, 1, 3, color);
+            if (TotalPossibility(ref board, board.LastMove, -1, 1, color) >= 5)
+                ret += LignWeight(ref board, ref pos, -1, 1, 3, color);
 #if DEBUG
             System.Console.WriteLine("defensive: " + pos.X + " " + pos.Y + " = " + ret);
 #endif
             return (ret);
         }
 
-        private int GetOffensiveWeight(ref Board board, Pos pos)
+        private int GetOffensiveWeight(ref Board board, Pos pos, int color, int enemyColor)
         {
             int ret = 0;
-            if (TotalPossibility(ref board, board.LastMove, 1, 0, 1) >= 5)
-                ret += LignWeight(ref board, ref pos, 1, 0, 4, 1);
-            if (TotalPossibility(ref board, board.LastMove, 0, 1, 1) >= 5)
-                ret += LignWeight(ref board, ref pos, 0, 1, 4, 1);
-            if (TotalPossibility(ref board, board.LastMove, 1, 1, 1) >= 5)
-                ret += LignWeight(ref board, ref pos, 1, 1, 4, 1);
-            if (TotalPossibility(ref board, board.LastMove, -1, 1, 1) >= 5)
-                ret += LignWeight(ref board, ref pos, -1, 1, 4, 1);
+            if (TotalPossibility(ref board, board.LastMove, 1, 0, enemyColor) >= 5)
+                ret += LignWeight(ref board, ref pos, 1, 0, 4, enemyColor);
+            if (TotalPossibility(ref board, board.LastMove, 0, 1, enemyColor) >= 5)
+                ret += LignWeight(ref board, ref pos, 0, 1, 4, enemyColor);
+            if (TotalPossibility(ref board, board.LastMove, 1, 1, enemyColor) >= 5)
+                ret += LignWeight(ref board, ref pos, 1, 1, 4, enemyColor);
+            if (TotalPossibility(ref board, board.LastMove, -1, 1, enemyColor) >= 5)
+                ret += LignWeight(ref board, ref pos, -1, 1, 4, enemyColor);
 #if DEBUG
             System.Console.WriteLine("offensive: " + pos.X + " " + pos.Y + " = " + ret);
 #endif
             return (ret);
         }
 
-        private int GetWeight(ref Board board, Pos pos)
+        private int GetWeight(ref Board board, Pos pos, int color = 2, int enemyColor = 1)
         {
             int weight = 0;
-            weight += OffensiveDefensivePattern(ref board, pos);
-            weight += GetDefensiveWeight(ref board, pos);
-            weight += GetOffensiveWeight(ref board, pos);
+            weight += OffensiveDefensivePattern(ref board, pos, color, enemyColor);
+            weight += GetDefensiveWeight(ref board, pos, color, enemyColor);
+            weight += GetOffensiveWeight(ref board, pos, color, enemyColor);
 #if DEBUG
             System.Console.WriteLine("Total: " + pos.X + " " + pos.Y + " = " + weight);
 #endif
@@ -243,7 +251,7 @@ namespace Gorillaz
         /// </summary>
         /// <param name="board"></param>
         /// <returns></returns>
-        private Pos WeightCalcul(ref Board board)
+        private Pos WeightCalcul(ref Board board, int color = 2, int enemyColor = 1)
         {
             int higher = 0;
             int tmp;
@@ -254,7 +262,7 @@ namespace Gorillaz
                 return (ret);
             for (int i = 0; i < playablePositions.Count(); i++)
             {
-                tmp = GetWeight(ref board, playablePositions[i]);
+                tmp = GetWeight(ref board, playablePositions[i], color, enemyColor);
                 if (tmp > higher)
                 {
                     higher = tmp;
