@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Gorillaz
 {
@@ -12,13 +8,14 @@ namespace Gorillaz
         /// return the total rocks that a player can align in a row from a start point
         /// </summary>
         /// <returns></returns>
-        private int TotalPossibility(ref Board board, Pos pos, int Xoffset, int Yoffset, int color = 2)
+        private int TotalPossibility(ref Board board, PlayPos pos, int Xoffset, int Yoffset, int color = 2)
         {
             int ret = 1;
             int i;
 
             i = 1;
-            while (i <= 4 && pos.Y + (i * Yoffset) < board.SizeMax.Y
+            while (i <= 4
+                && pos.Y + (i * Yoffset) < board.SizeMax.Y
                 && pos.Y + (i * Yoffset) >= 0
                 && pos.X + (i * Xoffset) < board.SizeMax.X
                 && pos.X + (i * Xoffset) >= 0
@@ -29,7 +26,8 @@ namespace Gorillaz
                 i += 1;
             }
             i = -1;
-            while (i >= -4 && pos.Y + (i * Yoffset) < board.SizeMax.Y
+            while (i >= -4
+                && pos.Y + (i * Yoffset) < board.SizeMax.Y
                 && pos.Y + (i * Yoffset) >= 0
                 && pos.X + (i * Xoffset) < board.SizeMax.X
                 && pos.X + (i * Xoffset) >= 0
@@ -42,57 +40,49 @@ namespace Gorillaz
             return (ret);
         }
 
-        private int LignWeight(ref Board board, ref Pos pos, int Xoffset, int Yoffset,
+        //no possibilities *4* *3°* *2°°* *°2°* *1°°1°* etc Already handled
+        
+            // **z
+
+        //opened one side
+        //opened 2 sides
+        //opened middle
+        //opened middle one side
+        //opened middle 2 sides
+
+
+
+        private int LignWeight(ref Board board, ref PlayPos pos, int Xoffset, int Yoffset,
             int rowFactor, int color = 2)
         {
-            int tmpRowFactor;
-            int highestRowFactor = 0;
-            int proximityFactor = 0;
-            int proximity = 0;
             int spaces;
             int ret = 0;
             int i;
             
             i= 1;
-            tmpRowFactor = 0;
             spaces = 0;
-#if DEBUG
-            System.Console.WriteLine("case:" + (pos.X + (i * Xoffset)) + " " + (pos.Y + (i * Yoffset)));
-#endif
-            while (i <= 4 && pos.Y + (i * Yoffset) < board.SizeMax.Y 
+
+            while (i <= 4 && spaces <= 1
+                && pos.Y + (i * Yoffset) < board.SizeMax.Y 
                 && pos.Y + (i * Yoffset) >= 0
                 && pos.X + (i * Xoffset) < board.SizeMax.X
                 && pos.X + (i * Xoffset) >= 0
                 && (board.Grid[pos.Y + (i * Yoffset), pos.X + (i * Xoffset)] == 0
                 || board.Grid[pos.Y + (i * Yoffset), pos.X + (i * Xoffset)] == color))
             {
-#if DEBUG
-                System.Console.WriteLine("case:" + (pos.X + (i * Xoffset)) + " " + (pos.Y + (i * Yoffset)));
-#endif
                 if (board.Grid[pos.Y + (i * Yoffset), pos.X + (i * Xoffset)] == color)
                 {
-                    if (proximity == 0)
-                        proximityFactor += 1;
-                    ret += (5 + tmpRowFactor);
-                    ret -= spaces;
-                    spaces = 0;
-                    tmpRowFactor += 1;
-                    if (tmpRowFactor > highestRowFactor)
-                        highestRowFactor = tmpRowFactor;
+                    ret += i * (i - spaces);
                 }
                 else
                 {
-                    tmpRowFactor = 0;
                     spaces += 1;
-                    proximity += 1;
                 }
                 i += 1;
             }
             i = -1;
-            tmpRowFactor = 0;
-            spaces = 0;
-            proximity = 0;
-            while (i >= -4 && pos.Y + (i * Yoffset) < board.SizeMax.Y
+            while (i >= -4 && spaces <= 1
+                && pos.Y + (i * Yoffset) < board.SizeMax.Y
                 && pos.Y + (i * Yoffset) >= 0
                 && pos.X + (i * Xoffset) < board.SizeMax.X
                 && pos.X + (i * Xoffset) >= 0
@@ -101,37 +91,30 @@ namespace Gorillaz
             {
                 if (board.Grid[pos.Y + (i * Yoffset), pos.X + (i * Xoffset)] == color)
                 {
-                    if (proximity == 0)
-                        proximityFactor += 1;
-                    ret += (5 + tmpRowFactor);
-                    ret -= spaces;
-                    spaces = 0;
-                    tmpRowFactor += 1;
-                    if (tmpRowFactor > highestRowFactor)
-                        highestRowFactor = tmpRowFactor;
+                    ret += i * (i + spaces);
                 }
                 else
                 {
-                    tmpRowFactor = 0;
                     spaces += 1;
                 }
                 i -= 1;
             }
-            if (highestRowFactor >= rowFactor) //la priorisation n'a pas l'air de fonctionner
-            {
-                ret = ret * (2 + (highestRowFactor - rowFactor));
-                if (highestRowFactor == 4 && color == 2)
-                    ret += 2500;
-                else if (highestRowFactor == 4 && color == 1)
-                    ret += 3000;
-            }
-            if (proximityFactor >= rowFactor && color == 2)
-                ret = ret * (2 + (highestRowFactor - rowFactor)) * 8;
-            return (ret);
+            //highestRowFactor += tmpRowFactor;
+            //if (highestRowFactor >= rowFactor) //la priorisation n'a pas l'air de fonctionner
+            //{
+            //    ret = ret * (2 + (highestRowFactor - rowFactor));
+            //if (highestRowFactor == 4 && color == 1)
+            //    ret += 3000;
+            //else if (highestRowFactor == 4 && color == 2)
+            //    ret += 2500;
+            //}
+            //if (proximityFactor >= rowFactor && color == 2)
+            //    ret = ret * (2 + (highestRowFactor - rowFactor)) * 8;
+            return (ret * rowFactor);
         }
 
 
-        private int PatternWeight(ref Board board, ref Pos pos, int Xoffset, int Yoffset, int color = 2, int row = 3)
+        private int PatternWeight(ref Board board, ref PlayPos pos, int Xoffset, int Yoffset, int color = 2, int row = 3)
         {
             int ret = 0;
             int spaces = 0;
@@ -170,7 +153,7 @@ namespace Gorillaz
             return (0);
         }
 
-        private int OffensiveDefensivePattern(ref Board board, Pos pos, int color, int enemyColor)
+        private int OffensiveDefensivePattern(ref Board board, PlayPos pos, int color, int enemyColor)
         {
 
             int ret = 0;
@@ -198,50 +181,37 @@ namespace Gorillaz
             {
                 ret += PatternWeight(ref board, ref pos, -1, 1, color, 4) + 2;
             }
-            return (ret);
-        }
-        private int GetDefensiveWeight(ref Board board, Pos pos, int color, int enemyColor)
-        {
-            int ret = 0;
-            if (TotalPossibility(ref board, board.LastMove, 1, 0, color) >= 5)
-                ret += LignWeight(ref board, ref pos, 1, 0, 3, color);
-            if (TotalPossibility(ref board, board.LastMove, 0, 1, color) >= 5)
-                ret += LignWeight(ref board, ref pos, 0, 1, 3, color);
-            if (TotalPossibility(ref board, board.LastMove, 1, 1, color) >= 5)
-                ret += LignWeight(ref board, ref pos, 1, 1, 3, color);
-            if (TotalPossibility(ref board, board.LastMove, -1, 1, color) >= 5)
-                ret += LignWeight(ref board, ref pos, -1, 1, 3, color);
 #if DEBUG
-            System.Console.WriteLine("defensive: " + pos.X + " " + pos.Y + " = " + ret);
+            System.Console.WriteLine("pattern: " + pos.X + " " + pos.Y + " = " + ret);
 #endif
             return (ret);
         }
 
-        private int GetOffensiveWeight(ref Board board, Pos pos, int color, int enemyColor)
+        private int GetOffensiveDefensiveWeight(ref Board board, PlayPos pos, int color, int weight)
         {
             int ret = 0;
-            if (TotalPossibility(ref board, board.LastMove, 1, 0, enemyColor) >= 5)
-                ret += LignWeight(ref board, ref pos, 1, 0, 4, enemyColor);
-            if (TotalPossibility(ref board, board.LastMove, 0, 1, enemyColor) >= 5)
-                ret += LignWeight(ref board, ref pos, 0, 1, 4, enemyColor);
-            if (TotalPossibility(ref board, board.LastMove, 1, 1, enemyColor) >= 5)
-                ret += LignWeight(ref board, ref pos, 1, 1, 4, enemyColor);
-            if (TotalPossibility(ref board, board.LastMove, -1, 1, enemyColor) >= 5)
-                ret += LignWeight(ref board, ref pos, -1, 1, 4, enemyColor);
+            if (TotalPossibility(ref board, pos, 1, 0, color) >= 5)
+                ret += LignWeight(ref board, ref pos, 1, 0, weight, color);
+            if (TotalPossibility(ref board, pos, 0, 1, color) >= 5)
+                ret += LignWeight(ref board, ref pos, 0, 1, weight, color);
+            if (TotalPossibility(ref board, pos, 1, 1, color) >= 5)
+                ret += LignWeight(ref board, ref pos, 1, 1, weight, color);
+            if (TotalPossibility(ref board, pos, -1, 1, color) >= 5)
+                ret += LignWeight(ref board, ref pos, -1, 1, weight, color);
 #if DEBUG
-            System.Console.WriteLine("offensive: " + pos.X + " " + pos.Y + " = " + ret);
+            System.Console.WriteLine("color " + color + ": " + pos.X + " " + pos.Y + " = " + ret);
 #endif
             return (ret);
         }
 
-        private int GetWeight(ref Board board, Pos pos, int color = 2, int enemyColor = 1)
+        private int GetWeight(ref Board board, PlayPos pos, int color = 2, int enemyColor = 1)
         {
             int weight = 0;
-            weight += OffensiveDefensivePattern(ref board, pos, color, enemyColor);
-            weight += GetDefensiveWeight(ref board, pos, color, enemyColor);
-            weight += GetOffensiveWeight(ref board, pos, color, enemyColor);
+            //weight += OffensiveDefensivePattern(ref board, pos, color, enemyColor);
+            weight += GetOffensiveDefensiveWeight(ref board, pos, color, 3);
+            weight += GetOffensiveDefensiveWeight(ref board, pos, enemyColor, 4);
 #if DEBUG
-            System.Console.WriteLine("Total: " + pos.X + " " + pos.Y + " = " + weight);
+            System.Console.WriteLine("=====Total: " + pos.X + " " + pos.Y + " = " + weight + "=====");
 #endif
             return (weight);
         }
@@ -258,15 +228,20 @@ namespace Gorillaz
             Pos ret = new Pos();
             ret.X = ret.Y = -1;
             List<Pos> playablePositions = board.GetPlayablePos();
+            List<PlayPos> playpos = new List<PlayPos>();
+            foreach(var pos in playablePositions)
+            {
+                playpos.Add(new PlayPos(pos));
+            }
             if (playablePositions.Capacity <= 0)
                 return (ret);
-            for (int i = 0; i < playablePositions.Count(); i++)
+            foreach(var pos in playpos)
             {
-                tmp = GetWeight(ref board, playablePositions[i], color, enemyColor);
+                tmp = GetWeight(ref board, pos, color, enemyColor);
                 if (tmp > higher)
                 {
                     higher = tmp;
-                    ret = playablePositions[i];
+                    ret = pos;
                 }
             }
             return (ret);

@@ -1,17 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Gorillaz
+﻿namespace Gorillaz
 {
-    class Pos
+    public class Pos
     {
-        int x;
-        int y;
-
-        public int X { get => x; set => x = value; }
-        public int Y { get => y; set => y = value; }
+        public int X { get; set; }
+        public int Y { get; set; }
     }
 }

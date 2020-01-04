@@ -10,7 +10,7 @@ namespace Gorillaz
         private int _end;
         Board board = new Board();
         Infos infos = new Infos();
-        IOinterface iointerface = new IOinterface();
+        IoInterface iointerface = new IoInterface();
 
         /// <summary>
         /// unit test for the class Board
@@ -19,15 +19,16 @@ namespace Gorillaz
         {
             Board board_test = new Board();
             List<Pos> tab_test;
+            IA iA = new IA();
             board_test.SetBoardSize(20);
             Console.WriteLine("set the boardsize to 20");
-            board_test.PlaceARock(2, 2, 1);
+            board_test.PlaceARock(1, 2, 2);
             Console.WriteLine("Placed a rock color 1 in 2,2");
-            board_test.PlaceARock(2, 5, 2);
+            board_test.PlaceARock(2, 2, 5);
             Console.WriteLine("Placed a rock color 2 in 2,5");
-            board_test.PlaceARock(0, 0, 1);
+            board_test.PlaceARock(1, 0, 0);
             Console.WriteLine("Placed a rock color 1 in 0,0");
-            board_test.PlaceARock(19, 19, 2);
+            board_test.PlaceARock(2, 19, 19);
             Console.WriteLine("Placed a rock color 2 in 19,19");
             tab_test = board_test.GetPlayablePos();
             Console.WriteLine("got a tab of playable pos");
@@ -36,6 +37,9 @@ namespace Gorillaz
                 Console.WriteLine(s.X + " " + s.Y);
             }
             Console.WriteLine("displayed playable pos");
+            Console.WriteLine("Weights:");
+            var pos = iA.BrainTurn(ref board_test);
+            Console.WriteLine("Choosed position: " + pos.X + " " + pos.Y);
         }
         public int Start()
         {
@@ -44,7 +48,7 @@ namespace Gorillaz
 #endif
             _IA = new IA();
             _end = 0;
-            Pos pos = new Pos();
+            Pos pos;
 
             while (_end != 84 && _end != 42)
             {

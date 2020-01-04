@@ -1,20 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Gorillaz
 {
-    class Board
+    public class Board
     {
-        private int[,] _grid;
-        private Pos sizeMax;
-        private Pos lastMove;
-        private Pos iALastMove;
         
-        public int[,] Grid { get => _grid; set => _grid = value; }
-        internal Pos SizeMax { get => sizeMax; set => sizeMax = value; }
-        internal Pos LastMove { get => lastMove; set => lastMove = value; }
-        internal Pos IALastMove { get => iALastMove; set => iALastMove = value; }
+        public int[,] Grid { get; set; }
+        internal Pos SizeMax { get; set; }
+        internal Pos LastMove { get; set; }
+        internal Pos IALastMove { get; set; }
 
         /// <summary>
         /// constructor & initialisation
@@ -22,7 +17,7 @@ namespace Gorillaz
         public Board()
         {
             SizeMax = new Pos();
-            lastMove = new Pos();
+            LastMove = new Pos();
             IALastMove = new Pos();
             SizeMax.X = SizeMax.Y = 20;
             LastMove.X = LastMove.Y = -1;
@@ -68,12 +63,14 @@ namespace Gorillaz
                         for (i = 0; i < offX.Length && i < offY.Length; ++i)
                         {
                             if (y + offY[i] >= 0 && x + offX[i] >= 0 &&
-                                y + offY[i] < SizeMax.Y && x + offX[i] < sizeMax.Y &&
+                                y + offY[i] < SizeMax.Y && x + offX[i] < SizeMax.Y &&
                                 Grid[y + offY[i], x + offX[i]] != 0)
                             {
-                                Pos tmp = new Pos();
-                                tmp.X = x;
-                                tmp.Y = y;
+                                Pos tmp = new Pos
+                                {
+                                    X = x,
+                                    Y = y
+                                };
                                 tab.Add(tmp);
                                 i = offX.Length;
                             }
@@ -92,7 +89,7 @@ namespace Gorillaz
             if (size < 5 || size > 40)
                 return (1);
             SizeMax.X = size;
-            sizeMax.Y = size;
+            SizeMax.Y = size;
             Grid = new int[SizeMax.Y, SizeMax.X];
             Initialize();
             return (0);
@@ -142,11 +139,10 @@ namespace Gorillaz
             int x = -1;
             int y = -1;
             int field = -1;
-            int tmp;
 
             foreach (string str in wordtab)
             {
-                if (Int32.TryParse(str, out tmp) == true)
+                if (Int32.TryParse(str, out int tmp))
                 {
                     if (x == -1)
                     {
@@ -170,14 +166,26 @@ namespace Gorillaz
         {
             Pos ret = new Pos();
             var random = new Random((int)DateTime.Now.Ticks);
-            int g = 0;
+            int g = -50;
 
-            while (g == 0)
+            while (g <= 0)
             {
-                ret.X = random.Next(0, SizeMax.X);
-                ret.Y = random.Next(0, SizeMax.X);
+                ret.X = random.Next(0 + ((SizeMax.X - 1) / 4 + 1), SizeMax.X - ((SizeMax.X - 1) / 4 + 1));
+                ret.Y = random.Next(0 + ((SizeMax.Y - 1) / 4 + 1), SizeMax.Y - ((SizeMax.Y - 1) / 4 + 1));
+                g += 1;
                 if (Grid[ret.Y, ret.X] == 0)
-                    g = 1;
+                    g = 42;
+            }
+            if (g != 42)
+            {
+                g = 0;
+                while (g == 0)
+                {
+                    ret.X = random.Next(0 + ((SizeMax.X - 1) / 4 + 1), SizeMax.X - ((SizeMax.X - 1) / 4 + 1));
+                    ret.Y = random.Next(0 + ((SizeMax.Y - 1) / 4 + 1), SizeMax.Y - ((SizeMax.Y - 1) / 4 + 1));
+                    if (Grid[ret.Y, ret.X] == 0)
+                        g = 1;
+                }
             }
             return (ret);
         }

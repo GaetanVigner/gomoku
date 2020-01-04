@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Gorillaz
 {
-    class IOinterface
+    public class IoInterface
     {
-        string input;
-        
         /// <summary>
         /// Write a statement followed by a message on the standard output
         /// </summary>
@@ -80,7 +76,7 @@ namespace Gorillaz
         /// fill the Info class
         /// </summary>
         /// <param name="infos"></param>
-        void SetInfos(Infos infos)
+        public void SetInfos(Infos infos)
         {
 
         }
@@ -92,7 +88,7 @@ namespace Gorillaz
         /// <param name="board"></param>
         public int GetInput(ref Board board, ref Infos infos)
         {
-            input = Console.ReadLine();
+            string input = Console.ReadLine();
             string[] wordTab = input.Split(' ', ',');
             int ret = -1;
 
